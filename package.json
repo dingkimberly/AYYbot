@@ -1,0 +1,10 @@
+{
+  "name": "AYYbot",
+  "version": "1.0.0",
+  "description": "A bot for my friends and me",
+  "main": "bot.js",
+  "author": "Kimberly Ding",
+  "dependencies": {
+    "discord.io": "^2.5.3"
+  }
+}
