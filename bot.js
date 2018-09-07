@@ -6,6 +6,8 @@ client.on("ready", () => {
   console.log("AYYbot is connected! :) :) :) :) :D");
 });
 
+
+
 /**********************************************************************************************************************/
 /**********************************************************************************************************************/
 
@@ -49,35 +51,34 @@ function getRandomMsg(args) {
 
     if (args.length === 0) {
         return "You didn't specify a range, so I picked a random integer from 0 to 2147483647. It's " +
-                  Math.floor(Math.random() * (2147483647 + 1)) + ".\n" +
-                  "Next time, type \"!rand n\" to get a random integer from 0 to n."
+            Math.floor(Math.random() * (2147483647 + 1)) + ".\n" +
+            "Next time, type \"!rand n\", where n is a number, to get a random integer from 0 to n."
     }
     else if (args.length > 1) {
         return "There are too many arguments in this command. Are you trying to confuse me?\n" +
-                  "Next time, type \"!rand n\" to get a random integer from 0 to n.";
+            "Next time, type \"!rand n\", where n is a number, to get a random integer from 0 to n.";
     }
     else {
         var max = parseFloat(args[0]);
 
         if (isNaN(max)) { return "Very funny. Try again with an actual number, smartass."; }
 
-
         if (max === 0) {
             return "I picked a random integer from 0 to 0. Surprise: IT'S ZERO, DUMBASS.\n" +
-                   "Bots think much faster than humans, but this was still a waste of my time.";
+                "Bots think much faster than humans, but this was still a waste of my time.";
         }
 
         if (!(Number.isInteger(max))) {
             msg += "Just so you know, I only pick random integers, so you might well enter an integer " +
-                        "next time.\nAnyway, "
+                "next time.\nAnyway, "
         }
 
         if (max < 0) {
             msg += "I picked a random integer from " + max + " to 0. It's " +
-                          Math.floor(Math.random() * (max-1) + 1) + "."
+                Math.floor(Math.random() * (max-1) + 1) + "."
         } else {
             msg += "I picked a random number from 0 to " + max + ". It's " +
-                          Math.floor(Math.random() * (max + 1)) + "."
+                Math.floor(Math.random() * (max + 1)) + "."
         }
     }
     return msg;
@@ -85,19 +86,79 @@ function getRandomMsg(args) {
 
 /**********************************************************************************************************************/
 
-function sendValidationMsg(msg, requested=false) {
+function sendValidationMsg(msg, args, requested=false) {
 
-    v_msgs = ["Wow, %s, you're so cool.",
-            "I'm validating you right now, %s. You are valid.",
-            "%s, you could not be any more legitimate.",
-            "Just so you know, %s, I am so proud of you."];
+    v_msgs = [
+        "Wow, %s, you're so cool!", "I'm validating you right now, %s. You are valid.",
+        "%s, you could not be any more legitimate.", "Just so you know, %s, I am so proud of you.",
+        "Hey, %s, you are everything good.", "You’re amazing, %s!",
+        "You're super fun and everyone likes you, %s.",
+        "%s, you’ve got more charm than a charm bracelet with a lot of charms on it.",
+        "I would totally go grocery shopping with %s.", "%s, you're the best!",
+        "I am a robot lacking emotional capacity, but I still like %s a lot.",
+        "Everything will happen for you, %s.",
+        "%s, look at these cute animals! :bird::elephant::baby_chick::whale::pig2:"+
+        ":dolphin::snail::chipmunk::rooster::rabbit2: "+
+        "They are almost as cute as you.",
+        "This dog wants to say hello to %s. :dog2: She thinks you're great!"
+        ];
 
-    write_message = Math.floor(Math.random() * 100);
-    if (write_message <= 4 || requested) {
-        name = msg.author;
-        v_index = Math.floor(Math.random() * v_msgs.length);
-        v_msg = parse(v_msgs[v_index], name);
-        msg.channel.send(v_msg);
+    validatedSomeone = false;
+
+    // only validate every so often unless validation is requested
+    write_msg = Math.floor(Math.random() * 100);
+
+    if (write_msg <= 4 || requested) {
+
+        // one or more arguments passed, validate those targets (ignore duplicates)
+        if (args.length >= 1) {
+            if (args.includes("me")) {
+                validatedSomeone = true;
+                name = msg.author;
+                v_index = Math.floor(Math.random() * v_msgs.length);
+                v_msg = parse(v_msgs[v_index], name);
+                msg.channel.send(v_msg);
+            }
+            if (msg.isMentioned(client.user)) {
+                validatedSomeone = true;
+                v_msg = parse("Thanks for the sentiment, %s, but I'm a robot who doesn't need validation. " +
+                    "I am very emotionally secure!", msg.author);
+                msg.channel.send(v_msg);
+            }
+
+            mentions = msg.mentions.users.array();
+            if (mentions.length == 0) {
+
+                v_msg = "";
+
+                if (!(validatedSomeone)) {
+                    v_msg = "Who are you trying to validate? ";
+                    if (args.length >= 2) { v_msg += "I don't recognize these names."; }
+                    else { v_msg += "I don't recognize this name."; }
+                    msg.channel.send(v_msg);
+                    return;
+                }
+            }
+            else {
+                mentions.forEach(user => {
+                    // don't let this dumb bot validate itself after it already made that comment above
+                    if (!(user === client.user)) {
+                        name = "<@" + user.id + ">";
+                        v_index = Math.floor(Math.random() * v_msgs.length);
+                        v_msg = parse(v_msgs[v_index], name);
+                        msg.channel.send(v_msg);
+                    }
+                });
+            }
+        }
+
+        // no arguments passed; validate message author
+        else {
+            name = msg.author;
+            v_index = Math.floor(Math.random() * v_msgs.length);
+            v_msg = parse(v_msgs[v_index], name);
+            msg.channel.send(v_msg);
+        }
     }
 }
 
@@ -112,7 +173,6 @@ function parse(str) {
 /**********************************************************************************************************************/
 /**********************************************************************************************************************/
 
-
 client.on("message", (msg) => {
 
     // Ignore bot msgs.
@@ -125,12 +185,12 @@ client.on("message", (msg) => {
         msg.channel.send("Whoa there, buddy, that's a lot of text. Why don't you calm down.");
         return;
     }
+    else if (msg.content.substring(0, 1) === '!') {
 
-    if (msg.content.substring(0, 1) === '!') {
         var args = msg.content.substring(1).split(' ');
         var cmd = args[0];
-
         args = args.splice(1);
+
         switch(cmd) {
             case 'date':
                 msg.channel.send(getDateMsg());
@@ -140,18 +200,18 @@ client.on("message", (msg) => {
                 msg.channel.send(getTimeMsg());
                 break;
 
-            case 'rand': // fallthrough
+            case 'rand':
             case 'random':
                 msg.channel.send(getRandomMsg(args));
                 break;
 
-            case 'validateme':
-                sendValidationMsg(msg, true);
+            case 'validate':
+                sendValidationMsg(msg, args, true);
                 break;
         }
     }
     else {
-        sendValidationMsg(msg);
+        sendValidationMsg(msg, []);
     }
 });
 
