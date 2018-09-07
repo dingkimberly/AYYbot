@@ -1,10 +1,16 @@
 {
   "name": "AYYbot",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dingkimberly/AYYbot.git"
+  },
   "version": "1.0.0",
   "description": "A bot for my friends and me",
   "main": "bot.js",
   "author": "Kimberly Ding",
   "dependencies": {
-    "discord.io": "^2.5.3"
+    "discord.io": "^2.5.3",
+    "discord.js": "^11.4.2",
+    "enmap": "^1.0.0"
   }
 }
