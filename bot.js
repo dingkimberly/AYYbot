@@ -3,7 +3,7 @@ const client = new Discord.Client();
 const auth = require("./auth.json");
 
 client.on("ready", () => {
-  console.log("AYYbot is connected!");
+  console.log("AYYbot is connected! :) :) :) :) :D");
 });
 
 /**********************************************************************************************************************/
@@ -87,15 +87,13 @@ function getRandomMsg(args) {
 
 function getValidationMsg(msg) {
 
-    friend_ids = ["373214112269860868", "425544164365565962", "322214531793289226", "322214531793289226",
-              "428402654146723849"];
+    v_msgs = ["Wow, %s, you're so cool.",
+            "I'm validating you right now, %s. You are valid.",
+            "%s, you could not be any more legitimate.",
+            "Just so you know, %s, I am so proud of you."];
 
-    v_msgs = ["Wow, %s, you're so cool.", "I'm validating you right now.", "Could you be any more legitimate?",
-                       "Just so you know, %s, I am so proud of you."];
-
-    write_message = Math.floor(Math.random() * 10);
-
-    if (friend_ids.indexOf(msg.author.id) >= 0 && write_message <= 3) {
+    write_message = Math.floor(Math.random() * 100);
+    if (write_message <= 4) {
         name = msg.author;
         v_index = Math.floor(Math.random() * v_msgs.length);
         v_msg = parse(v_msgs[v_index], name);
@@ -123,10 +121,11 @@ client.on("message", (msg) => {
     // Ignore DMs.
     if (msg.channel.type !=='text') return;
 
-    getValidationMsg(msg);
+
 
     if (msg.content.length > 1000) {
         msg.channel.send("Whoa there, buddy, that's a lot of text. Why don't you calm down.");
+        return;
     }
 
     if (msg.content.substring(0, 1) === '!') {
@@ -135,7 +134,6 @@ client.on("message", (msg) => {
 
         args = args.splice(1);
         switch(cmd) {
-
             case 'date':
                 msg.channel.send(getDateMsg());
                 break;
@@ -149,6 +147,9 @@ client.on("message", (msg) => {
                 msg.channel.send(getRandomMsg(args));
                 break;
         }
+    }
+    else {
+        getValidationMsg(msg);
     }
 });
 
