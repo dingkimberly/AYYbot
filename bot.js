@@ -85,7 +85,7 @@ function getRandomMsg(args) {
 
 /**********************************************************************************************************************/
 
-function getValidationMsg(msg) {
+function sendValidationMsg(msg, requested=false) {
 
     v_msgs = ["Wow, %s, you're so cool.",
             "I'm validating you right now, %s. You are valid.",
@@ -93,7 +93,7 @@ function getValidationMsg(msg) {
             "Just so you know, %s, I am so proud of you."];
 
     write_message = Math.floor(Math.random() * 100);
-    if (write_message <= 4) {
+    if (write_message <= 4 || requested) {
         name = msg.author;
         v_index = Math.floor(Math.random() * v_msgs.length);
         v_msg = parse(v_msgs[v_index], name);
@@ -121,8 +121,6 @@ client.on("message", (msg) => {
     // Ignore DMs.
     if (msg.channel.type !=='text') return;
 
-
-
     if (msg.content.length > 1000) {
         msg.channel.send("Whoa there, buddy, that's a lot of text. Why don't you calm down.");
         return;
@@ -146,10 +144,14 @@ client.on("message", (msg) => {
             case 'random':
                 msg.channel.send(getRandomMsg(args));
                 break;
+
+            case 'validateme':
+                sendValidationMsg(msg, true);
+                break;
         }
     }
     else {
-        getValidationMsg(msg);
+        sendValidationMsg(msg);
     }
 });
 
