@@ -1,2 +1,2 @@
-# ayybot
+# Ayybot
 A Discord bot. 
