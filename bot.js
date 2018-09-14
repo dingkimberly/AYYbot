@@ -1,12 +1,12 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const auth = require("./auth.json");
+const package = require("./package.json")
 
 client.on("ready", () => {
-  console.log("AYYbot is connected! :) :) :) :) :D");
+    console.log("\nAyybot version " + package.version);
+    console.log("Connected!\n");
 });
-
-
 
 /**********************************************************************************************************************/
 /**********************************************************************************************************************/
@@ -15,9 +15,11 @@ function getDateMsg() {
     var d = new Date();
     var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     var months = ['January','February','March','April','May','June','July',
-                  'August','September','October','November','December'];
+        'August','September','October','November','December'];
+
+    console.log("Sent user the date.");
     return "Today is " + days[d.getDay()] + ", " + months[d.getMonth()] + " " + d.getDate() +
-                                       ", " + d.getFullYear() + ".";
+        ", " + d.getFullYear() + ".";
 }
 
 function leftPad(number, targetLength) {
@@ -40,6 +42,7 @@ function getTimeMsg() {
         hour = hour % 12;
     } else if (hour === 0 ) {hour === 12; }
 
+    console.log("Sent user the time.");
     return "It is " + hour + ":" + leftPad(d.getMinutes(), 2) + ":" + leftPad(d.getSeconds(), 2) + " " + m + ".";
 }
 
@@ -77,10 +80,12 @@ function getRandomMsg(args) {
             msg += "I picked a random integer from " + max + " to 0. It's " +
                 Math.floor(Math.random() * (max-1) + 1) + "."
         } else {
-            msg += "I picked a random number from 0 to " + max + ". It's " +
+            msg += "I picked a random integer from 0 to " + max + ". It's " +
                 Math.floor(Math.random() * (max + 1)) + "."
         }
     }
+
+    console.log("Sent user a random integer.");
     return msg;
 }
 
@@ -100,12 +105,11 @@ function sendValidationMsg(msg, args, requested=false) {
         "%s, look at these cute animals! :bird::elephant::baby_chick::whale::pig2:"+
         ":dolphin::snail::chipmunk::rooster::rabbit2: "+
         "They are almost as cute as you.",
-        "This dog wants to say hello to %s. :dog2: She thinks you're great!"
+        "This dog wants to say hello to you, %s. :dog2: She thinks you're great!"
         ];
 
     validatedSomeone = false;
 
-    // only validate every so often unless validation is requested
     write_msg = Math.floor(Math.random() * 100);
 
     if (write_msg <= 4 || requested) {
@@ -118,19 +122,21 @@ function sendValidationMsg(msg, args, requested=false) {
                 v_index = Math.floor(Math.random() * v_msgs.length);
                 v_msg = parse(v_msgs[v_index], name);
                 msg.channel.send(v_msg);
+                console.log("Validated user.");
             }
             if (msg.isMentioned(client.user)) {
                 validatedSomeone = true;
                 v_msg = parse("Thanks for the sentiment, %s, but I'm a robot who doesn't need validation. " +
                     "I am very emotionally secure!", msg.author);
+
+                console.log("Informed user of AYYbot's emotional security.\n");
                 msg.channel.send(v_msg);
             }
 
+            // maybe there are fake names in here. AYYbot will only acknowledge that if it didn't get to validate
+            // anybody else.
             mentions = msg.mentions.users.array();
             if (mentions.length == 0) {
-
-                v_msg = "";
-
                 if (!(validatedSomeone)) {
                     v_msg = "Who are you trying to validate? ";
                     if (args.length >= 2) { v_msg += "I don't recognize these names."; }
@@ -147,6 +153,7 @@ function sendValidationMsg(msg, args, requested=false) {
                         v_index = Math.floor(Math.random() * v_msgs.length);
                         v_msg = parse(v_msgs[v_index], name);
                         msg.channel.send(v_msg);
+                        console.log("Validated user.");
                     }
                 });
             }
@@ -158,6 +165,7 @@ function sendValidationMsg(msg, args, requested=false) {
             v_index = Math.floor(Math.random() * v_msgs.length);
             v_msg = parse(v_msgs[v_index], name);
             msg.channel.send(v_msg);
+            console.log("Validated user.");
         }
     }
 }
@@ -181,8 +189,9 @@ client.on("message", (msg) => {
     // Ignore DMs.
     if (msg.channel.type !=='text') return;
 
-    if (msg.content.length > 1000) {
-        msg.channel.send("Whoa there, buddy, that's a lot of text. Why don't you calm down.");
+    if (msg.content.length > 1500) {
+        msg.channel.send("Whoa there, friend, that's a lot of text. Hope you're doing well.");
+        console.log("User experienced some form of emotional breakdown.")
         return;
     }
     else if (msg.content.substring(0, 1) === '!') {
@@ -211,6 +220,7 @@ client.on("message", (msg) => {
         }
     }
     else {
+        // randomly validate after about 5% of normal user messages (not bot commands)
         sendValidationMsg(msg, []);
     }
 });
