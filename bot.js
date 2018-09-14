@@ -129,11 +129,11 @@ function sendValidationMsg(msg, args, requested=false) {
                 v_msg = parse("Thanks for the sentiment, %s, but I'm a robot who doesn't need validation. " +
                     "I am very emotionally secure!", msg.author);
 
-                console.log("Informed user of AYYbot's emotional security.\n");
+                console.log("Informed user of Ayybot's emotional security.\n");
                 msg.channel.send(v_msg);
             }
 
-            // maybe there are fake names in here. AYYbot will only acknowledge that if it didn't get to validate
+            // maybe there are fake names in here. Ayybot will only acknowledge that if it didn't get to validate
             // anybody else.
             mentions = msg.mentions.users.array();
             if (mentions.length == 0) {
