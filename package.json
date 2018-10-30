@@ -1,8 +1,8 @@
 {
-  "name": "Ayybot",
+  "name": "ayybot",
   "repository": {
     "type": "git",
-    "url": "git://github.com/dingkimberly/AYYbot.git"
+    "url": "git://github.com/dingkimberly/ayybot.git"
   },
   "version": "1.0.0",
   "description": "A bot for my friends and me",
