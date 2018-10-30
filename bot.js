@@ -55,11 +55,11 @@ function getRandomMsg(args) {
     if (args.length === 0) {
         return "You didn't specify a range, so I picked a random integer from 0 to 2147483647. It's " +
             Math.floor(Math.random() * (2147483647 + 1)) + ".\n" +
-            "Next time, type \"!rand n\", where n is a number, to get a random integer from 0 to n."
+            "Next time, type \"!rand n\", where n is an integer, to get a random integer from 0 to n."
     }
     else if (args.length > 1) {
         return "There are too many arguments in this command. Are you trying to confuse me?\n" +
-            "Next time, type \"!rand n\", where n is a number, to get a random integer from 0 to n.";
+            "Next time, type \"!rand n\", where n is a integer, to get a random integer from 0 to n.";
     }
     else {
         var max = parseFloat(args[0]);
@@ -179,6 +179,28 @@ function parse(str) {
 }
 
 /**********************************************************************************************************************/
+
+function getHelpMsg() {
+    help_msgs = [
+        "Here's the list of commands you can type.",
+        "!help: You already typed this one.",
+        "!date: Get the date.",
+        "!time: Get the time.",
+        "!rand n, where n is an integer: Get a random integer from 0 to n.",
+        "!validate: Get a nice compliment from me.",
+        "!validate @user: Give a nice compliment to that user."
+    ]
+
+    var help_msg = "";
+
+    for (var i = 0; i < help_msgs.length; i++) {
+        help_msg += help_msgs[i] + "\n";
+    }
+
+    return help_msg;
+}
+
+/**********************************************************************************************************************/
 /**********************************************************************************************************************/
 
 client.on("message", (msg) => {
@@ -201,6 +223,11 @@ client.on("message", (msg) => {
         args = args.splice(1);
 
         switch(cmd) {
+
+            case 'help':
+                msg.channel.send(getHelpMsg());
+                break;
+
             case 'date':
                 msg.channel.send(getDateMsg());
                 break;
