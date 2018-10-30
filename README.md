@@ -1,5 +1,5 @@
 # Ayybot
-This is a silly Discord bot. Its most complicated function is validating people. 
+This is a silly Discord bot. 
 
 ## To use:
 1. Clone the repository.
