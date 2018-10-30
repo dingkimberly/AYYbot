@@ -1,7 +1,7 @@
 # Ayybot
-A Discord bot. 
+This is a silly Discord bot. Its most complicated function is validating people. 
 
-To use:
+## To use:
 1. Clone the repository.
 
 2. Create a file named auth.json in the directory. The contents of the file should be { "token": "YOUR TOKEN HERE" }.
