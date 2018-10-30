@@ -59,7 +59,7 @@ function getRandomMsg(args) {
     }
     else if (args.length > 1) {
         return "There are too many arguments in this command. Are you trying to confuse me?\n" +
-            "Next time, type \"!rand n\", where n is a integer, to get a random integer from 0 to n.";
+            "Next time, type \"!rand n\", where n is an integer, to get a random integer from 0 to n.";
     }
     else {
         var max = parseFloat(args[0]);
