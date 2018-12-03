@@ -12,8 +12,8 @@ This is a silly Discord bot.
 
 # Notes
 
-pic1.png is taken from [this entry](https://www.reddit.com/r/ProgrammerHumor/comments/9p66tc/my_lazy_attempt_at_logo_and_banner/ "this entry") in /r/ProgrammerHumor's logo competition
+pic1 is taken from [this entry](https://www.reddit.com/r/ProgrammerHumor/comments/9p66tc/my_lazy_attempt_at_logo_and_banner/ "this entry") in /r/ProgrammerHumor's logo competition
 
-pic2.png is drawn by me. 
+pic2 was drawn by me!
 
 You can change the bot's icon from Discord's Developer Portal. 
