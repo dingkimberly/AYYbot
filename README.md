@@ -1,4 +1,4 @@
-# Ayybot
+# ayybot
 This is a silly Discord bot. 
 
 ## To use:
